@@ -1,0 +1,26 @@
+{% extends "filmes/index.html" %}
+
+{% block titulo %}
+    Registar
+{% endblock %}
+
+{% block informacao %}
+    {% if error_message %}
+        <p><strong>{{ error_message }}</strong></p>
+    {% endif %}
+{% endblock %}
+
+{%  block conteudo %}
+    <form action="{% url 'sessao:registar'%}"
+          method="post">
+        {% csrf_token %}
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username" required><br>
+        <label for="email">E-mail:</label><br>
+        <input type="text" id="email" name="email" required pattern="[a-z0-9._%+-]+@iscte-iul\.pt$" placeholder="nome@iscte-iul.pt"><br>
+        {{ form.as_p }}
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password" required><br><br>
+        <input type="submit" id="registar" value="Registar" style="border: 1px solid #b9b9b9; background-color: #444444;"/><br>
+    </form>
+{% endblock %}

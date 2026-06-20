@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+
+    <title>{% block titulo %} Página Inicial {% endblock %}</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'filmes/images/favicon-popcorn.ico' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'filmes/css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/tiny-slider.css">
+
+    <script type="text/javascript" src="{% static 'filmes/css/scripts.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js"></script>
+
+</head>
+<body style="margin: 0;">
+    <header>
+         <div style="display: flex; justify-content: space-between;">
+             <span><a href="{% url 'filmes:index' %}" style="color: white"><h1 style="font-family: 'Showcard Gothic';">CineReviews</h1></a></span>
+             <div class="utilizador_header">
+                {% if request.user.is_authenticated %}
+                    {% if 'notificacoes_count' in request.session %}
+                        <a href="{% url 'filmes:notificacoes' request.user.id %}" class="notification">
+                            <span>&#128276</span>
+                            <span class="badge">{{request.session.notificacoes_count}}</span></a>
+                    {% else %}
+                        <a href="{% url 'filmes:notificacoes' request.user.id %}" class="notification">
+                            <span>&#128276</span></a>
+                    {% endif %}
+                    {% if request.session.has_photo %}
+                        <span>User: {{ request.session.username }}</span> <img src="{% static 'sessao/'|add:user.username|add:'.jpg' %}">
+                    {% else %}
+                        <span>User: {{ request.session.username }}</span> <img src="{% static 'sessao/default.jpg' %}">
+                    {% endif %}
+                {% else %}
+                    <p>Bem vindo!</p>
+                {% endif %}
+             </div>
+        </div>
+    </header>
+    <nav>
+        {% block links %}
+        <ul style="list-style-type:none;">
+            <li><a href="{% url 'filmes:index' %}">Página inicial</a></li>
+            <li><a href="{% url 'filmes:lista' %}">Procurar Filme</a></li>
+            {% if request.user.is_authenticated %}
+                <li><a href="{% url 'sessao:informacao' %}">Perfil</a></li>
+                <li><a href="{% url 'sessao:logoutview' %}">Logout</a></li>
+            {% else %}
+                <li><a href="{% url 'sessao:loginview' %}">Login</a></li>
+                <li><a href="{% url 'sessao:registar' %}">Registar</a></li>
+            {% endif %}
+            {% if request.user.is_superuser %}
+                <li><a href="{% url 'sessao:criarmoderador' %}">Criar moderador</a></li>
+            {% endif %}
+        </ul>
+        {% endblock %}
+    </nav>
+    <main>
+        <article>
+            <section class="informacao">
+                {% block informacao %}
+                    <h3 style="font-size: 20px;">CineReviews: O que é?</h3>
+                    <p>CineReviews é um site onde a tua opinião importa. Aqui podes ver não só os últimos filmes que <br>
+                        lançaram no mundo do cinema, assim como ver a avaliação global e comentários dos nossos utilizadores!<br>
+                        Se também quiseres expressar o quão maravilhado ficaste com um filme de animação, o quanto choraste com aquele filme de drama,<br>
+                        ou como aquele filme de terror de deixou completamente apavorado, adere já à nossa página criando conta <a href="{% url 'sessao:registar' %}">aqui</a>
+                        <br> e começa a tua aventura como crítico do cinema connosco!!</p>
+                {% endblock %}
+            </section>
+            <section class="conteudo">
+                {% block conteudo %}
+                    <div class="caroussel">
+                        <div class="subcaroussel">
+                            <div class="slider-wrapper">
+                                <h3 style="display: flex; justify-content: center; align-items: center;">Últimos lançamentos:</h3>
+                                <div class="my-slider">
+                            {% for filme in filmes %}
+                                    <div class="slide-img">
+                                        <a href="{% url 'filmes:avaliacao' filme.id %}">
+                                            <img src="{% static 'filmes/images/'|add:filme.titulo|add:'.jpg' %}" alt="{{filme.titulo}}" width="310" height="455" style="transition: 0.5s;">
+                                            <span style="color:white">Visitar página do filme</span>
+                                        </a>
+                                    </div>
+                            {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <form action="{% url 'filmes:lista' %}"
+                        method="GET">
+                         {% csrf_token %}
+                        <input type="submit" value="Ver Lista" style="border: 1px solid #b9b9b9; background-color: #444444; display: block; margin: auto;"/>
+                    </form>
+                {% endblock %}
+            </section>
+        </article>
+    </main>
+    <script>
+        window.onload = function() {
+            let slider = tns({
+                container : ".my-slider",
+                "slideBy" : "1",
+                "speed" : 400,
+                "nav" : false,
+                autoplay : true,
+                controls: false,
+                autoplayButtonOutput : false,
+                responsive: {
+                    1600: {
+                        items: 4,
+                        gutter : 20
+                    },
+                    1200: {
+                        items: 3,
+                        gutter: 20,
+                    },
+                    768: {
+                        items: 2,
+                        gutter: 20,
+                    },
+                    480: {
+                        items: 1,
+                    }
+                }
+            })
+        }
+    </script>
+</body>
+</html>

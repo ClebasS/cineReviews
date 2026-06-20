@@ -1,0 +1,109 @@
+{% extends "filmes/index.html" %}
+{% load static %}
+
+{% block titulo %}
+    Avaliação Filme
+{% endblock %}
+
+{% block informacao %}
+    <div class="filme-info">
+        <h1 style="font-size: 2em; margin-bottom: 10px; margin-top: 0;">{{ filme.titulo }}</h1>
+        <img src="{% static 'filmes/images/'|add:filme.titulo|add:'.jpg' %}" alt="{{filme.titulo}}" width="310" height="455"><br>
+        <div class="container-info">
+            <ul style="list-style-type:none;">
+                <li>{{ filme.descricao }}</li>
+                <li><b>Género:</b> {{ filme.genero }}</li>
+                <li><b>Direção:</b> {{ filme.diretor }}</li>
+                <li><b>Artistas:</b> {{ filme.elenco }}</li>
+                <li><b>Data de lançamento:</b> {{ filme.data_lancamento|date:"d F, Y" }}</li>
+            </ul>
+        </div>
+    </div>
+    {% if perms.filmes.change_filme %}
+        <form action="{% url 'filmes:editarfilme' filme.id %}"
+            method="get" style="display: inline-block;">
+            {% csrf_token %}
+            <input type="submit" value="Editar Filme" id="editar-filme"/>
+        </form>
+    {% endif %}
+{% endblock %}
+
+{%  block conteudo %}
+    <div style="margin-top: 50px;">
+        <div style="margin-left: 44%;display: flex; width: 50%;">
+            <div style="width: 15%">
+                <label style="font-size: 20px;">Rating imdb:</label><br>
+                {% if filme.avaliacao_imdb != 0 %}
+                    <div>
+                        <label style="font-size: 23px; color: #FFD700">&#9733;</label>
+                        <label style="font-size: 19px;">{{ filme.avaliacao_imdb }} / 10</label>
+                    </div>
+                {% else %}
+                    <div><label style="font-size: 19px; margin-top: 8px;">-- / 10</label></div>
+                {% endif %}
+            </div>
+            <div>
+                <label style="font-size: 20px;">Rating users:</label><br>
+                {% if filme.avaliacao_media != 0 %}
+                    <div>
+                        <label style="font-size: 23px; color: #FFD700">&#9733;</label>
+                        <label style="font-size: 19px;">{{ filme.avaliacao_media }} / 5.0</label>
+                    </div>
+                {% else %}
+                    <div><label style="font-size: 19px; margin-top: 8px;">--/5</label></div>
+                {% endif %}
+            </div>
+        </div>
+        <form action="{% url 'filmes:criarcomentario' filme.id %}"
+            method="get" style="display: inline-block;">
+            {% csrf_token %}
+            <input type="submit" value="Comentar" style="font-weight: bold;"/>
+        </form>
+        <br><br>
+        {% for comentario in filme.comentario_set.all|dictsortreversed:"data_criacao" %}
+            <div id="comentario-{{comentario.id}}" class="comentario">
+                <div class= "comentario_header">
+                    <a href="{% url 'filmes:seguir' filme.id comentario.user.id %}"
+                       {% if comentario.user.is_superuser %}
+                           style="color: lime;"
+                       {% elif comentario.user.is_staff %}
+                           style="color: deepskyblue;"
+                       {% else %}
+                           style="color: orange;"
+                       {% endif %}
+                    >{{comentario.user.username}}:</a>
+                    <span>{{comentario.data_criacao|date:"d F, Y"}}</span>
+                </div>
+                <div class="stars">
+                    <input type="radio" id="star1" name="avaliacao" value="1" disabled/>
+                        <label for="star1" style="font-size: 20px;">&#9733</label>
+                    <input type="radio" id="star2" name="avaliacao" value="2" disabled/>
+                        <label for="star2" style="font-size: 20px;">&#9733</label>
+                    <input type="radio" id="star3" name="avaliacao" value="3" disabled/>
+                        <label for="star3" style="font-size: 20px;">&#9733</label>
+                    <input type="radio" id="star4" name="avaliacao" value="4" disabled/>
+                        <label for="star4" style="font-size: 20px;">&#9733</label>
+                    <input type="radio" id="star5" name="avaliacao" value="5" disabled/>
+                        <label for="star5" style="font-size: 20px;">&#9733</label>
+                </div>
+                <script> exibirRating(parseInt("{{comentario.avaliacao}}"), "{{comentario.id}}"); </script>
+                <br>
+                <span>{{comentario.texto}}</span><br><br>
+                {% if request.user == comentario.user %}
+                    <form action="{% url 'filmes:editarcomentario' filme.id %}"
+                          method="get" style="display: inline-block;">
+                        {% csrf_token %}
+                        <input type="submit" value="Editar Comentário"/>
+                    </form>
+                {% endif %}
+                {% if request.user == comentario.user or request.user.is_superuser or perms.filmes.delete_comentario and not comentario.user.is_superuser %}
+                    <form action="{% url 'filmes:avaliacao' filme_id=filme.id comentario_id=comentario.id %}"
+                          method="post" style="display: inline-block;">
+                        {% csrf_token %}
+                        <input type="submit" value="Apagar Comentário"/>
+                    </form>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "filmes/index.html" %}
+{% load static %}
+
+{% block titulo %}
+    Editar Filme
+{% endblock %}
+
+{% block informacao %}
+    {% if error_message %}
+        <p id="message"><strong>{{ error_message }}</strong></p>
+        <script>
+            setTimeout(() => {
+                const Message = document.getElementById('message');
+                Message.classList.add('hide');
+            }, 1000);
+        </script>
+    {% endif %}
+{% endblock %}
+
+{%  block conteudo %}
+    <img src="{% static 'filmes/images/'|add:filme.titulo|add:'.jpg' %}" alt="{{ filme.titulo }}" width="155" height="225" style="position: relative; top: 20px; ">
+    <p>
+        <a href="{% url 'filmes:fazer_uploadfilme' %}"> Fazer upload de capa </a>
+    </p>
+    <form action="{% url 'filmes:editarfilme' filme.id%}"
+          method="post">
+        {% csrf_token %}
+        <label for="titulo">Título:</label><br>
+        <input type="text" id="titulo" name="titulo" style="width: 300px;" placeholder="{{ filme.titulo }}"><br>
+        {{ form.as_p }}
+        <label for="descricao">Sinopse:</label><br>
+        <textarea id="descricao" name="descricao" maxlength="300" rows="4" cols="50" placeholder="{{ filme.descricao }}"></textarea><br>
+        <label for="diretor">Diretor:</label><br>
+        <input type="text" id="diretor" name="diretor" placeholder="{{ filme.diretor }}"><br>
+        <label for="elenco">Elenco:</label><br>
+        <textarea id="elenco" name="elenco" rows="4" cols="50" placeholder="{{ filme.elenco }}"></textarea><br>
+        <label for="imdb">Avaliação imdb:</label><br>
+        <input type="number" id="imdb" name="imdb" style="width: 30px;" step="any" placeholder="{{ filme.avaliacao_imdb }}" min="1" max="10"><span>/10</span><br>
+        <label for="data_lancamento">Data de estreia:</label><br>
+        <input type="date" id="data_lancamento" name="data_lancamento" placeholder="{{ filme.data_lancamento }}"><br><br>
+        <input type="submit" value="Editar informações do filme"/>
+    </form>
+{% endblock %}

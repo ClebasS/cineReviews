@@ -1,0 +1,32 @@
+{% extends "filmes/index.html" %}
+
+{% block titulo %}
+    Criar Editor
+{% endblock %}
+
+{% block informacao %}
+    {% if error_message %}
+        <p id="message"><strong>{{ error_message }}</strong></p>
+        <script>
+            setTimeout(() => {
+                const Message = document.getElementById('message');
+                Message.classList.add('hide');
+            }, 1000);
+        </script>
+    {% endif %}
+{% endblock %}
+
+{%  block conteudo %}
+    <form action="{% url 'sessao:criarmoderador'%}"
+          method="post">
+        {% csrf_token %}
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username" required><br>
+        <label for="email">E-mail:</label><br>
+        <input type="text" id="email" name="email" required pattern="[a-z0-9._%+-]+@iscte-iul\.pt$" placeholder="nome@iscte-iul.pt"><br>
+        {{ form.as_p }}
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password" required><br><br>
+        <input type="submit" id="registar" value="Registar"/><br>
+    </form>
+{% endblock %}

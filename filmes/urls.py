@@ -1,0 +1,38 @@
+from django.urls import path
+from . import views
+
+app_name = 'filmes'
+urlpatterns = [
+ path("", views.index,
+      name="index"),
+ path('lista', views.lista,
+      name="lista"),
+ path('adicionarfilme', views.adicionarfilme,
+      name="adicionarfilme"),
+ path('fazer_uploadfilme', views.fazer_uploadfilme,
+      name="fazer_uploadfilme"),
+ path('<int:filme_id>/avaliacao', views.avaliacao,
+      name="avaliacao"),
+ path('<int:filme_id>/<int:comentario_id>/apagarcomentario', views.avaliacao,
+      name="avaliacao"),
+ path('<int:filme_id>/editarfilme', views.editarfilme,
+      name="editarfilme"),
+ path('<int:filme_id>/criarcomentario', views.criarcomentario,
+      name="criarcomentario"),
+ path('<int:filme_id>/<int:user_id>/seguir', views.seguir,
+      name="seguir"),
+ path('<int:user_id>/seguiruser', views.seguiruser,
+      name="seguiruser"),
+ path('<int:user_id>/deixarseguir', views.deixarseguir,
+      name="deixarseguir"),
+ path('<int:user_id>/notificacoes', views.notificacoes,
+      name="notificacoes"),
+ path('<int:user_id>/<int:notificacao_id>/notificacoes', views.notificacoes,
+      name="notificacoes"),
+ path('<int:filme_id>/editarcomentario', views.editarcomentario,
+      name="editarcomentario"),
+ path('<int:user_id>/demotemoderador', views.demotemoderador,
+      name="demotemoderador"),
+ path('<int:user_id>/banuser', views.banuser,
+      name="banuser"),
+]

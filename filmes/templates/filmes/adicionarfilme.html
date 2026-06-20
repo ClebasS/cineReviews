@@ -1,0 +1,38 @@
+{% extends "filmes/index.html" %}
+
+{% block titulo %}
+    Adicionar Filme
+{% endblock %}
+
+{% block informacao %}
+    {% if error_message %}
+        <p id="message"><strong>{{ error_message }}</strong></p>
+         <script>
+            setTimeout(() => {
+                const Message = document.getElementById('message');
+                Message.classList.add('hide');
+            }, 1000);
+        </script>
+    {% endif %}
+{% endblock %}
+
+{% block conteudo %}
+    <form action="{% url 'filmes:adicionarfilme'%}"
+          method="post">
+        {% csrf_token %}
+        <label for="titulo">Título:</label><br>
+        <input type="text" id="titulo" name="titulo" style="width: 300px;" required><br>
+        {{ form.as_p }}
+        <label for="descricao">Sinopse:</label><br>
+        <textarea id="descricao" name="descricao" maxlength="300" rows="4" cols="50"></textarea><br>
+        <label for="diretor">Diretor:</label><br>
+        <input type="text" id="diretor" name="diretor"><br>
+        <label for="elenco">Elenco:</label><br>
+        <textarea id="elenco" name="elenco" placeholder="Ex:Tobey Maguire, Tom Holland, ..." rows="4" cols="50"></textarea><br>
+        <label for="imdb">Avaliação imdb:</label><br>
+        <input type="number" id="imdb" name="imdb" style="width: 30px;" step="any" placeholder="00.0" min="1" max="10"><span>/10</span><br>
+        <label for="data_lancamento">Data de estreia:</label><br>
+        <input type="date" id="data_lancamento" name="data_lancamento" required><br><br>
+        <input type="submit" value="Avançar para o upload da capa"/>
+    </form>
+{% endblock %}

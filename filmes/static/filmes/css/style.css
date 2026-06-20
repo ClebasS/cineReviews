@@ -1,0 +1,369 @@
+header{
+    background-image: linear-gradient(164deg, red 80%, white 20%);
+    padding: 10px;
+    border: 10px;
+    text-align: center;
+    font-size: 25px;
+    color: black;
+}
+
+header a:hover{
+    color: white;
+}
+
+.utilizador_header{
+    text-align: left;
+    margin-top: 60px;
+    font-size: 17px;
+}
+
+.utilizador_header img{
+    width: 40px;
+    height: 40px;
+    position: relative;
+    top: 15px;
+}
+
+body{
+    background-color: #333333;
+    color: white;
+}
+
+nav {
+    background-color: lightgray;
+    float: left;
+    width: 20%;
+    padding-bottom: 30px;
+}
+
+nav li {
+    padding: 8px;
+    margin-top: 7px;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+main {
+    background-color: #333333;
+    float:left;
+    width: 80%;
+    overflow: hidden;
+}
+
+a {
+    color: orange;
+    text-decoration: none;
+}
+
+a:hover {
+  color: red;
+}
+
+ul li a {
+  color: blue;
+}
+
+/* index */
+.informacao {
+    margin-top: 16px;
+    margin-left: 20px;
+    font-size: 17px;
+    font-family: Lato,Lato-fallback,Arial,sans-serif;
+}
+
+.conteudo {
+    margin-top: 16px;
+    margin-left: 20px;
+    font-size: 17px;
+    font-family: Lato,Lato-fallback,Arial,sans-serif;
+}
+
+.caroussel{
+    width: 1600px;
+    margin: auto;
+}
+
+.subcaroussel{
+    width: 80%;
+    margin:auto;
+}
+
+.slide-img{
+    width: 100%;
+    height: 455px;
+    border-radius: 5px;
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+}
+
+.slide-img a span{
+    transition: 0.5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    transform: translate(50%, -50%);
+    -ms-transform: translate(50%, -50%);
+}
+
+.slide-img:hover img{
+   opacity: 0.3;
+}
+
+.slide-img:hover a span{
+    opacity: 1;
+}
+
+@media(max-width: 1600px){
+    .caroussel{
+        width: 100%;
+    }
+}
+
+/* form */
+.multi-column{
+    display: inline-block;
+    box-sizing: border-box;
+    margin-right: 10px;
+    column-count: 3;
+}
+
+input[type="checkbox"] {
+    margin-left: 14px;
+    margin-right: 0;
+}
+
+/* lista */
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    margin: 0 20px;
+}
+
+.filme {
+    flex-basis: 25%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.filme-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#myBtn {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    z-index: 99;
+    font-size: 20px;
+    outline: none;
+    background-color: darkred;
+    border: 1px solid #222222;
+    color: white;
+    cursor: pointer;
+    padding: 10px 14px;
+    border-radius: 50%;
+}
+
+#myBtn:hover {
+  background-color: #a50000;
+}
+
+/* avaliacao */
+.filme-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container-info li {
+    max-width: 600px;
+    word-wrap: break-word;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.comentario {
+    background-color: #444444;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.comentario_header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.comentario_header a:hover{
+    text-decoration: underline;
+}
+
+#editar-filme{
+    border: 1px solid white;
+    border-radius: 5%;
+}
+
+/* comentario */
+label {
+  display: inline-block;
+}
+
+.stars {
+  display: inline-block;
+}
+
+.stars input{
+    display: none;
+}
+
+.stars label {
+  font-size: 50px;
+  color: #ccc;
+  cursor: pointer;
+}
+
+/* message */
+#message {
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
+}
+
+#message.hide {
+    opacity: 0;
+}
+
+/*notificacoes */
+.notification {
+  padding: 4px 4px;
+  position: relative;
+  display: inline-block;
+  border-radius: 50%;
+}
+
+.notification:hover {
+  background: #b9b9b9;
+}
+
+.notification .badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    padding: 2px 7px;
+    border-radius: 50%;
+    background-color: red;
+    color: white;
+    font-size: 15px;
+}
+
+/* config avaliacao_imdb */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+/* config submit e button */
+input[type=submit], button {
+    padding: 6px 10px;
+    position: relative;
+    display: inline-block;
+    background-color: transparent;
+    color: white;
+    cursor: pointer;
+    border: none;
+    font-size: 17px;
+}
+
+input[type=submit]:hover, button:hover {
+    background-color: #222222;
+}
+
+/* seguir */
+button i {
+  font-size: 20px;
+  display: inline-block;
+  transition: transform 0.2s ease-in-out;
+}
+
+.unfollow-button i {
+    color: violet;
+    transform: scale(1.6);
+}
+
+.unfollow-button:hover i {
+    color: gray;
+}
+
+.unfollow-button span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    margin-bottom: 16px;
+    transition: 0.4s;
+}
+
+.unfollow-button span:after {
+  content: '\2212';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -3px;
+  transition: 0.2s;
+}
+
+.unfollow-button:hover span {
+  padding-right: 16px;
+}
+
+.unfollow-button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+.follow-button i {
+    color: white;
+}
+
+.follow-button:hover i {
+    color: violet;
+    transform: scale(1.6);
+}
+
+.follow-button span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    margin-bottom: 16px;
+    transition: 0.4s;
+}
+
+.follow-button span:after {
+  content: 'Seguir';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.2s;
+}
+
+.follow-button:hover span {
+  padding-right: 60px;
+}
+
+.follow-button:hover span:after {
+  opacity: 1;
+  right: 0;
+}

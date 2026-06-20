@@ -1,0 +1,50 @@
+{% extends "filmes/index.html" %}
+{% load static %}
+
+{% block titulo %}
+    Info {{utilizador.user.username}}
+{% endblock %}
+
+{% block informacao %}
+    {% if error_message %}
+        <p id="message"><strong>{{ error_message }}</strong></p>
+        <script>
+            setTimeout(() => {
+                const Message = document.getElementById('message');
+                Message.classList.add('hide');
+            }, 1000);
+        </script>
+    {% endif %}
+{% endblock %}
+
+{%  block conteudo %}
+    <h2>{{utilizador.user.username}}</h2>
+    {% if utilizador.user.is_superuser %}
+        <span style="color: lime;">&#128081 Admin</span>
+    {% elif utilizador.user.is_staff %}
+       <span style="color: deepskyblue;">&#9820 Moderador</span>
+    {% endif %}
+    <br>
+    {% if request.session.visited_user_has_photo %}
+        <img src="{% static 'sessao/'|add:utilizador.user.username|add:'.jpg' %}" alt="Foto do usuário" width="50" height="50" style="position: relative; top: 20px; ">
+    {% else %}
+        <img src="{% static 'sessao/default.jpg' %}" alt="Foto do usuário" width="50" height="50" style="position: relative; top: 20px;">
+    {% endif %}
+    <p>Géneros prefreridos: {{utilizador.genero_preferido}}</p><br>
+    <p>Email: {{utilizador.user.email}}</p><br>
+    {% if request.user.username != utilizador.user.username and not utilizador.banido %}
+        {% if segue %}
+            <button id="unfollow"  class="unfollow-button" onclick="manipularBotao(this, '{{ utilizador.user.id }}', '{{ csrf_token }}')"><i>&#9829</i><span></span></button>
+        {% else %}
+            <button id="follow" class="follow-button" onclick="manipularBotao(this, '{{ utilizador.user.id }}', '{{ csrf_token }}')"><i>&#9829</i><span></span></button>
+        {% endif %}
+        {% if request.user.is_superuser %}
+            {% if utilizador.user.is_staff %}
+                <button id="demote" onclick="manipularBotao(this, '{{ utilizador.user.id }}', '{{ csrf_token }}')">Rebaixar a utilizador</button>
+            {% else %}
+                <button id="ban" onclick="manipularBotao(this, '{{ utilizador.user.id }}', '{{ csrf_token }}')"><a href="{% url 'filmes:seguir' filme_id utilizador.user.id %}" style="color: white">Banir utilizador</a></button>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+    <a href="{% url 'filmes:avaliacao' filme_id %}">Voltar</a>
+{% endblock %}

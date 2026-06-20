@@ -1,0 +1,57 @@
+{% extends "filmes/index.html" %}
+
+{% block titulo %}
+    Notificações
+{% endblock %}
+
+{% block informacao %}
+    {% if error_message %}
+        <p id="message"><strong>{{ error_message }}</strong></p>
+        <script>
+            setTimeout(() => {
+                const Message = document.getElementById('message');
+                Message.classList.add('hide');
+            }, 1000);
+        </script>
+    {% endif %}
+{% endblock %}
+
+{%  block conteudo %}
+    {% if notificacoes %}
+        {% for notificacao in notificacoes %}
+            {% if notificacao in notificacoes_sem_visto %}
+                <p><b>Nova notificação!</b></p>
+            {% endif %}
+            <div id="comentario-{{notificacao.comentario.id}}" class="comentario">
+                <div style="display: flex; justify-content: space-between;">
+                    <span>{{notificacao.comentario.user.username}} no filme: {{notificacao.comentario.filme.titulo}}</span>
+                    <span>{{notificacao.comentario.data_criacao|date:"d F, Y"}}</span>
+                </div>
+                <div class="stars">
+                    <input type="radio" id="star1" name="avaliacao" value="1" disabled/>
+                        <label for="star1" style="font-size: 20px;">&#9733</label>
+                    <input type="radio" id="star2" name="avaliacao" value="2" disabled/>
+                        <label for="star2" style="font-size: 20px;">&#9733</label>
+                    <input type="radio" id="star3" name="avaliacao" value="3" disabled/>
+                        <label for="star3" style="font-size: 20px;">&#9733</label>
+                    <input type="radio" id="star4" name="avaliacao" value="4" disabled/>
+                        <label for="star4" style="font-size: 20px;">&#9733</label>
+                    <input type="radio" id="star5" name="avaliacao" value="5" disabled/>
+                        <label for="star5" style="font-size: 20px;">&#9733</label>
+                </div>
+                <script> exibirRating(parseInt("{{notificacao.comentario.avaliacao}}"), "{{notificacao.comentario.id}}"); </script>
+                <br>
+                <span>{{notificacao.comentario.texto}}</span><br><br>
+                <button><a href="{% url 'filmes:avaliacao' notificacao.comentario.filme.id %}" style="color:white; ">Ir para página do filme</a></button>
+                <form action="{% url 'filmes:notificacoes' user_id=request.user.id notificacao_id=notificacao.id %}"
+                              method="post" style="display: inline-block;">
+                            {% csrf_token %}
+                            <input type="submit" value="Apagar Notificação"/>
+                        </form>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Não tem nenhuma notificação!</p>
+    {% endif %}
+    <button style="border: 1px solid #b9b9b9; background-color: #444444;"><a href="{% url 'filmes:index' %}" style="color: white;">Voltar para página inicial</a></button>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "filmes/index.html" %}
+
+{% block titulo %}
+    Login
+{% endblock %}
+
+{% block informacao %}
+    {% if error_message %}
+        <p><strong>{{ error_message }}</strong></p>
+    {% endif %}<br>
+{% endblock %}
+
+{% block conteudo %}
+    <form action="{% url 'sessao:loginview'%}"
+          method="post">
+        {% csrf_token %}
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username" required><br>
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password" required><br><br>
+        <input type="submit" value="Login" style="border: 1px solid #b9b9b9; background-color: #444444;"/>
+    </form><br>
+
+    <p> Ainda não está registado? </p>
+    <a href="{% url 'sessao:registar' %}"> Registar utilizador </a>
+{% endblock %}

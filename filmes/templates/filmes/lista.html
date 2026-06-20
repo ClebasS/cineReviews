@@ -1,0 +1,71 @@
+{% extends "filmes/index.html" %}
+{% load static %}
+
+{% block titulo %}
+    Lista
+{% endblock %}
+
+{% block informacao %}
+    <button onclick="topFunction()" id="myBtn" title="Go to top">&#8593</button>
+    <form action="{% url 'filmes:lista' %}"
+          method="POST" style="display: inline-block">
+         {% csrf_token %}
+        <label for="titulo_filme">Título do filme:</label>
+        <input type="text" id="titulo_filme" name="titulo_filme">
+        <label for="diretor_filme">Diretor:</label>
+        <input type="text" id="diretor_filme" name="diretor_filme">
+        <label for="ator_filme">Elenco:</label>
+        <input type="text" id="ator_filme" name="ator_filme" placeholder="Pesquise por um ator">
+        <label> Género: </label>
+        {% for genero in form.generos %}
+            {{ genero }}
+        {% endfor %}
+        <br>
+        <input type="submit" id="procurar" name="procurar" value="Procurar" style="font-weight: bold;">
+        <a href="{% url 'filmes:lista' %}">Reiniciar</a>
+    </form>
+    {% if perms.filmes.add_filme %}
+        <form action="{% url 'filmes:adicionarfilme' %}"
+              method="GET" style="display: inline-block">
+            {% csrf_token %}
+            <input type="submit" value="Adicionar Filme" style="border: 1px solid #b9b9b9; background-color: #444444;"/>
+        </form>
+    {% endif %}
+{% endblock %}
+
+{% block conteudo %}
+    {% if filmes %}
+        <div class="container">
+            {% for filme in filmes %}
+                <div class="filme">
+                    <a href="{% url 'filmes:avaliacao' filme.id %}">
+                        <img src="{% static 'filmes/images/'|add:filme.titulo|add:'.jpg' %}" alt="{{filme.titulo}}" width="310" height="455" style="position: relative;" onmouseover="aumentarImagem(this)" onmouseout="diminuirImagem(this)"> </a>
+                    <h3 style="margin-top: 10px; text-align: center;">{{ filme.titulo }}</h3>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Não há filmes disponiveis.</p>
+    {% endif %}
+    <script>
+        // Get the button
+        let mybutton = document.getElementById("myBtn");
+
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function() {scrollFunction()};
+
+        function scrollFunction() {
+          if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            mybutton.style.display = "block";
+          } else {
+            mybutton.style.display = "none";
+          }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function topFunction() {
+          document.body.scrollTop = 0;
+          document.documentElement.scrollTop = 0;
+        }
+    </script>
+{% endblock %}

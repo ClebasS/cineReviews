@@ -1,0 +1,43 @@
+{% extends "filmes/index.html" %}
+{% load static %}
+
+{% block titulo %}
+    Perfil
+{% endblock %}
+
+{% block informacao %}
+    {% if error_message %}
+        <p id="message"><strong>{{ error_message }}</strong></p>
+        <script>
+            setTimeout(() => {
+                const Message = document.getElementById('message');
+                Message.classList.add('hide');
+            }, 1000);
+        </script>
+    {% endif %}
+{% endblock %}
+
+{%  block conteudo %}
+    {% if request.session.has_photo %}
+        <img src="{% static 'sessao/'|add:user.username|add:'.jpg' %}" alt="Foto do usuário" width="50" height="50" style="position: relative; top: 20px; ">
+    {% else %}
+        <img src="{% static 'sessao/default.jpg' %}" alt="Foto do usuário" width="50" height="50" style="position: relative; top: 20px;">
+    {% endif %}
+    <p>
+        <a href="{% url 'sessao:fazer_uploaduser' %}"> Fazer upload de foto </a>
+    </p>
+    <form action="{% url 'sessao:informacao'%}"
+          method="post">
+        {% csrf_token %}
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username" placeholder="{{ user.username }}"><br>
+        <label for="email">E-mail:</label><br>
+        <input type="text" id="email" name="email" pattern="[a-z0-9._%+-]+@iscte-iul\.pt$" placeholder="{{ user.email }}"><br>
+        {{ form.as_p }}
+        <label for="nova_password">Nova Password:</label><br>
+        <input type="password" id="nova_password" name="nova_password"><br>
+        <label for="password">Digite Password atual para fazer as alterações:</label><br>
+        <input type="password" id="password" name="password" required><br><br>
+        <input type="submit" value="Confirmar edição"/>
+    </form>
+{% endblock %}

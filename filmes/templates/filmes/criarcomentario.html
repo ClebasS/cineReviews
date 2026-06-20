@@ -1,0 +1,42 @@
+{% extends "filmes/index.html" %}
+
+{% block titulo %}
+    Criar Comentário
+{% endblock %}
+
+{% block informacao %}
+    {% if error_message %}
+        <p id="message"><strong>{{ error_message }}</strong></p>
+        <script>
+            setTimeout(() => {
+                const Message = document.getElementById('message');
+                Message.classList.add('hide');
+            }, 1000);
+        </script>
+    {% endif %}
+{% endblock %}
+
+{% block conteudo %}
+    <form action="{% url 'filmes:criarcomentario' filme_id %}"
+          method="post">
+        {% csrf_token %}
+        <p>Avaliação:</p>
+    <div class="stars">
+      <input type="radio" id="star1" name="avaliacao" value="1" required/>
+        <label for="star1">&#9733</label>
+      <input type="radio" id="star2" name="avaliacao" value="2" required/>
+        <label for="star2">&#9733</label>
+      <input type="radio" id="star3" name="avaliacao" value="3" required/>
+        <label for="star3">&#9733</label>
+      <input type="radio" id="star4" name="avaliacao" value="4" required/>
+        <label for="star4">&#9733</label>
+      <input type="radio" id="star5" name="avaliacao" value="5" required/>
+        <label for="star5">&#9733</label>
+    </div>
+        <br>
+        <label for="texto_comentario">Comentário(opcional):</label><br>
+        <textarea id="texto_comentario" name="texto_comentario" rows="4" cols="50"></textarea><br>
+        <input type="submit" value="Publicar avaliação" style="border: 1px solid #b9b9b9; background-color: #444444;"/>
+    </form>
+    <script> iniciartRating(); </script>
+{% endblock %}
