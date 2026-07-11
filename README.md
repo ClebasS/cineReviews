@@ -207,7 +207,7 @@ python manage.py runserver
 Open:
 
 ```
-http://127.0.0.1:8000/
+http://127.0.0.1:8000/filmes
 ```
 
 ---
@@ -238,16 +238,51 @@ http://127.0.0.1:8000/
 
 ## 📸 Screenshots
 
-Screenshots of the application can be added here.
+### Home Page
 
-Example:
+The landing page introduces the platform and showcases the latest movie releases.
 
-```
-docs/
-    home.png
-    login.png
-    movie-details.png
-```
+![Home Page](screenshots/home.png)
+
+---
+
+### Browse & Search Movies
+
+Users can browse the movie catalog and search by title, actor, director or genre.
+
+![Browse Movies](screenshots/movies.png)
+
+---
+
+### Movie Details
+
+Each movie page displays detailed information including synopsis, cast, genres, IMDb rating, community rating and user reviews.
+
+![Movie Details](screenshots/movie-details.png)
+
+---
+
+### Submit a Review
+
+Authenticated users can rate movies using a 5-star system and optionally leave a written review.
+
+![Review](screenshots/review.png)
+
+---
+
+### User Profile
+
+Users can customize their profile, upload a profile picture, update personal information and select their favourite genres.
+
+![Profile](screenshots/profile.png)
+
+---
+
+### Notifications
+
+Users receive notifications whenever someone they follow publishes a new review.
+
+![Notifications](screenshots/notifications.png)
 
 ---
 
