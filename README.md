@@ -134,7 +134,7 @@ cineReviews/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/cineReviews.git
+git clone https://github.com/ClebasS/cineReviews.git
 ```
 
 ### 2. Enter the project
